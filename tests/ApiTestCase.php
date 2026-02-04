@@ -23,8 +23,8 @@ abstract class ApiTestCase extends BaseTestCase
             {
                 return '{
                     "id": 1,
-                    "title": "Clean Code: A Handbook of Agile Software Craftsmanship,
-                    "year_published: 2008,
+                    "title": "Clean Code: A Handbook of Agile Software Craftsmanship",
+                    "year_published": 2008,
                     "author": {
                         "id": 1,
                         "name": "Robert C. Martin",
