@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Http\Response;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 abstract class ApiTestCase extends BaseTestCase
@@ -11,17 +12,10 @@ abstract class ApiTestCase extends BaseTestCase
         string $uri = "/", 
         array $data = [], 
         array $headers = []
-        ):object
+        ):Response
     {
-        return new class {
-            public function getStatus(): int
-            {
-                return 200;
-            }
 
-            public function getBody(): string
-            {
-                return '{
+        $body = '{
                     "id": 1,
                     "title": "Clean Code: A Handbook of Agile Software Craftsmanship",
                     "year_published": 2008,
@@ -31,7 +25,7 @@ abstract class ApiTestCase extends BaseTestCase
                         "bio": "This is an author"
                    } 
                 }';
-            }
-        };
+
+        return new Response(body: $body, statusCode:200, headers: []);
     }
 }
