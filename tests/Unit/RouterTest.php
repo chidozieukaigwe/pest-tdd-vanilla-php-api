@@ -11,6 +11,10 @@ it('returns a 200 Response object if a valid route exists', function () {
 
     $router = new Router();
 
+    $router->setRoutes([
+        ['GET', '/foo', fn() => new Response()]
+    ]);
+
     // Act
     $response = $router->dispatch($requst);
 
