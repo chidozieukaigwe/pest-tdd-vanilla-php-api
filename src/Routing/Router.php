@@ -5,10 +5,14 @@ use FastRoute;
 use App\Http\Request;
 use App\Http\Response;
 use FastRoute\RouteCollector;
+use App\Routing\RouteHandlerResolver;
 use function FastRoute\simpleDispatcher;
 
 class Router
 {
+
+    public function __construct(private RouteHandlerResolver $routeHandlerResolver)
+    {}
 
     private iterable $routes;
 
@@ -41,8 +45,12 @@ class Router
                 break;
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];
-                $response = $handler();
-                // $vars = $routeInfo[2];
+                $vars = $routeInfo[2];
+
+                $handler = $this->routeHandlerResolver->resolve($handler);
+
+                $response = $handler(...$vars);
+         
                 // ... call $handler with $vars
                 break;
         }

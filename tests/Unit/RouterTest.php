@@ -3,16 +3,24 @@
 use App\Http\Request;
 use App\Http\Response;
 use App\Routing\Router;
+use App\Routing\RouteHandlerResolver;
 
 it('returns a 200 Response object if a valid route exists', function () {
 
     //  Arrange 
     $requst = Request::create("GET", '/foo');
 
-    $router = new Router();
+    $handler = fn() => new Response();
+
+    $routeHandlerResolver = Mockery::mock(RouteHandlerResolver::class);
+
+    $routeHandlerResolver->shouldReceive('resolve')
+        ->andReturn($handler);
+
+    $router = new Router($routeHandlerResolver);
 
     $router->setRoutes([
-        ['GET', '/foo', fn() => new Response()]
+        ['GET', '/foo', $handler ]
     ]);
 
     // Act
