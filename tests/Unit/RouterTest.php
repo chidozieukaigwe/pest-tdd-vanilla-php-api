@@ -5,11 +5,10 @@ use App\Http\Response;
 use App\Routing\Router;
 use App\Routing\RouteHandlerResolver;
 
-it('returns a 200 Response object if a valid route exists', function () {
 
-    //  Arrange 
-    $requst = Request::create("GET", '/foo');
-
+it("returns a correct Response object", function (string $method, string $path, int $statusCode) {
+    // Arrange
+    $request = Request::create($method, $path);
     $handler = fn() => new Response();
 
     $routeHandlerResolver = Mockery::mock(RouteHandlerResolver::class);
@@ -19,24 +18,20 @@ it('returns a 200 Response object if a valid route exists', function () {
 
     $router = new Router($routeHandlerResolver);
 
-    $router->setRoutes([
+     $router->setRoutes([
         ['GET', '/foo', $handler ]
     ]);
 
-    // Act
-    $response = $router->dispatch($requst);
+    // ACT
+    $response = $router->dispatch($request);
 
-    // Assert
+    // ASSERT
     expect($response)
-    ->toBeInstanceOf(Response::class)
-    ->and($response->getStatusCode())->toBe(200);
-    
-});
+        ->toBeInstanceOf(Response::class)
+        ->and($response->getStatusCode())->toBe($statusCode);
 
-it("returns a 404 Rfesponse objhect if a route does not exist", function () {
-
-})->todo();
-
-it("returns a 405 Response object if a not allowed method is used", function () {
-
-})->todo();
+})->with([
+    '200 OK Response' => ['GET', '/foo', Response::HTTP_OK],
+    '404 Response' => ['GET', '/bar', Response::HTTP_NOT_FOUND],
+    '405 Response' => ['POST', '/foo' , Response::HTTP_METHOD_NOT_ALLOWED]
+]);

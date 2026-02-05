@@ -37,11 +37,12 @@ class Router
       
         switch ($routeInfo[0]) {
             case FastRoute\Dispatcher::NOT_FOUND:
-                // ... 404 Not Found
+                $response = new Response('Route not found', Response::HTTP_NOT_FOUND);
                 break;
             case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
                 $allowedMethods = $routeInfo[1];
-                // ... 405 Method Not Allowed
+                $availableMethods = json_encode($allowedMethods, true);
+                $response = new Response("Route method not allowed. Available methods for route: $availableMethods", Response::HTTP_METHOD_NOT_ALLOWED);
                 break;
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];
