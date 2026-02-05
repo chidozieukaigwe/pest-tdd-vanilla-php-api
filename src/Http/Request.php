@@ -15,7 +15,7 @@ class Request
 
     }
 
-    public static function create(string $method, string $uri, array $server, string $content): self
+    public static function create(string $method, string $uri, array $server =[], string $content = ""): self
     {
         $uriParts = parse_url($uri);     
         
