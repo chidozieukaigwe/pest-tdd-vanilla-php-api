@@ -17,7 +17,7 @@ $routes = include __DIR__ ."/routes.php";
 # services
 $container->add(Router::class);
 $container->extend(Router::class)
-    ->addMethodCall('setRoutes', $routes);
+    ->addMethodCall('setRoutes', [$routes]);
 
 
 $container->add(Kernel::class)
